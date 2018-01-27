@@ -1,8 +1,12 @@
 cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
-project(fractals VERSION 0.1.0 LANGUAGES CXX)
+project(fractals VERSION 0.1.0 LANGUAGES C CXX)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 include(SetCompilerWarningAll)
+
+add_executable(lemon
+    tools/lemon/lemon.c
+)
 
 add_executable(fractals
     src/fractals.cpp
