@@ -1544,6 +1544,19 @@ static void handle_T_option(char *z){
   lemon_strcpy(user_templatename, z);
 }
 
+static char *user_outputname = NULL;
+static int user_cpp = 0;
+static void handle_o_option(char *z){
+  user_outputname = (char *) malloc( lemonStrlen(z)+1 );
+  if( user_outputname==0 ){
+    memory_error();
+  }
+  lemon_strcpy(user_outputname, z);
+  char *cp = strrchr(user_outputname, '.');
+  if( cp && strcmp(cp,".cpp") == 0 )
+    user_cpp = 1;
+}
+
 /* Merge together to lists of rules ordered by rule.iRule */
 static struct rule *Rule_merge(struct rule *pA, struct rule *pB){
   struct rule *pFirst = 0;
@@ -1632,6 +1645,7 @@ int main(int argc, char **argv)
     {OPT_FLAG, "r", (char*)&noResort, "Do not sort or renumber states"},
     {OPT_FLAG, "s", (char*)&statistics,
                                    "Print parser stats to standard output."},
+    {OPT_FSTR, "o", (char*)handle_o_option, "Print parser to this file."},
     {OPT_FLAG, "x", (char*)&version, "Print the version number."},
     {OPT_FSTR, "T", (char*)handle_T_option, "Specify a template file."},
     {OPT_FSTR, "W", 0, "Ignored.  (Placeholder for '-W' compiler options.)"},
@@ -3027,12 +3041,12 @@ PRIVATE char *file_makename(struct lemon *lemp, const char *suffix)
   char *name;
   char *cp;
 
-  name = (char*)malloc( lemonStrlen(lemp->filename) + lemonStrlen(suffix) + 5 );
+  name = (char*)malloc( lemonStrlen(user_outputname) + lemonStrlen(suffix) + 7 );
   if( name==0 ){
     fprintf(stderr,"Can't allocate space for a filename.\n");
     exit(1);
   }
-  lemon_strcpy(name,lemp->filename);
+  lemon_strcpy(name,user_outputname);
   cp = strrchr(name,'.');
   if( cp ) *cp = 0;
   lemon_strcat(name,suffix);
@@ -4097,7 +4111,8 @@ void ReportTable(
 
   in = tplt_open(lemp);
   if( in==0 ) return;
-  out = file_open(lemp,".c","wb");
+  if (user_cpp) out = file_open(lemp,".cpp","wb");
+  else out = file_open(lemp,".c","wb");
   if( out==0 ){
     fclose(in);
     return;
