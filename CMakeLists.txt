@@ -23,6 +23,10 @@ add_executable(fractals
     src/fractals.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/infix.cpp
 )
+target_include_directories(fractals
+  PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
 set_property(TARGET fractals
     PROPERTY CXX_STANDARD 17
 )
