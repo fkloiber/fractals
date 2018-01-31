@@ -1,3 +1,10 @@
+%name InfixParse
+%token_prefix TOK_
+%token_type {token*}
+%extra_argument {driver * Driver}
+%include {#include "token.hpp"}
+%include {#include "driver.hpp"}
+
 %left PLUS MINUS.
 %left TIMES DIV.
 %nonassoc NEG.
@@ -12,7 +19,7 @@ expr ::= expr DIV expr.
 expr ::= expr EXP expr.
 expr ::= LPAREN expr RPAREN.
 expr ::= MINUS expr. [NEG]
-expr ::= FUNC LPAREN args RPAREN.
+expr ::= IDENTIFIER LPAREN args RPAREN.
 expr ::= LITERAL.
 expr ::= IDENTIFIER.
 
