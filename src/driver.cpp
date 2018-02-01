@@ -25,11 +25,13 @@ driver::Parse(const std::string & Line)
     std::vector<token> TokenList;
 
     MyLexer.Driver = this;
+    MyLexer.NextToken = -1;
     while (MyLexer.lex() != 0);
-    TokenList.reserve(MyLexer.NextToken);
+    TokenList.reserve(MyLexer.NextToken + 1);
+
     Data = &TokenList;
-    Success = true;
     MyLexer.in(Line);
+    MyLexer.NextToken = -1;
 
     while (Success && (TokenType = MyLexer.lex()) != 0)
     {

@@ -5,7 +5,7 @@
 class driver
 {
 public:
-    driver() {};
+    driver() : Data(nullptr), Success(true) {}
     bool Parse(const std::string &);
 
     void Error();
