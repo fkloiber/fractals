@@ -2,10 +2,12 @@
 
 #include <vector>
 
-inline std::vector<token>& getT(driver * D)
-{
-    return *(std::vector<token>*)D->Data;
-}
+#include "token.hpp"
+
+
+class driver;
+
+std::vector<token>& getT(driver * D);
 
 #define EMPLACE(a)                       \
     NextToken++;                         \

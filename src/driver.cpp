@@ -48,3 +48,8 @@ driver::Parse(const std::string & Line)
 void
 driver::Error()
 {}
+
+std::vector<token>& getT(driver * D)
+{
+    return *(std::vector<token>*)D->Data;
+}

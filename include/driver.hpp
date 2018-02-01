@@ -2,6 +2,8 @@
 
 #include <string>
 
+#include "parse_tree.hpp"
+
 class driver
 {
 public:
@@ -10,6 +12,7 @@ public:
 
     void Error();
 
+    parse_tree_ptr Root;
     void * Data;
     bool Success;
 };
