@@ -9,4 +9,6 @@ public:
     bool Parse(const std::string &);
 
     void Error();
+
+    void * Data;
 };

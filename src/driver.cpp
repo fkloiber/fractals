@@ -9,7 +9,7 @@
 
 void * InfixParseAlloc(void*(*)(size_t));
 void InfixParseFree(void*, void(*)(void*));
-void InfixParse(void*, int, token*, driver*);
+void InfixParse(void*, int, int, driver*);
 
 struct parse_deleter
 {
@@ -22,15 +22,19 @@ driver::Parse(const std::string & Line)
     Lexer MyLexer(Line);
     std::unique_ptr<void, parse_deleter> Parser(InfixParseAlloc(malloc));
     int TokenType;
+    std::vector<token> TokenList;
 
     MyLexer.Driver = this;
+    while (MyLexer.lex() != 0);
+    TokenList.reserve(MyLexer.NextToken);
+    Data = &TokenList;
+    MyLexer.in(Line);
 
     while ((TokenType = MyLexer.lex()) != 0)
     {
         InfixParse(Parser.get(), TokenType, MyLexer.NextToken, this);
-        delete MyLexer.NextToken;
-        MyLexer.NextToken = nullptr;
     }
+    InfixParse(Parser.get(), 0, 0, this);
 
     return false;
 }

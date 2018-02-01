@@ -2,16 +2,16 @@
 %option fast
 
 %top{
-    #include "infix_parser.h"
     #include "driver.hpp"
     #include "token.hpp"
+    #include "parser_extra.hpp"
     #include <cerrno>
     #include <cstdlib>
 %}
 
 %class{
 public:
-    token * NextToken;
+    int NextToken;
     driver * Driver;
 %}
 
@@ -25,7 +25,7 @@ public:
         Driver->Error();
         return -1;
     }
-    NextToken = MakeIntLiteral(Val);
+    EMPLACE(Val);
     return TOK_LITERAL;
 }
 
@@ -37,23 +37,23 @@ public:
         Driver->Error();
         return -1;
     }
-    NextToken = MakeDblLiteral(Val);
+    EMPLACE(Val);
     return TOK_LITERAL;
 }
 
 [a-zA-Z]+_?[a-zA-Z]* {
-    NextToken = MakeIdentifier(text());
+    EMPLACE(str());
     return TOK_IDENTIFIER;
 }
 
-"+" { NextToken = MakePlus(); return TOK_PLUS; }
-"-" { NextToken = MakeMinus(); return TOK_MINUS; }
-"*" { NextToken = MakeTimes(); return TOK_TIMES; }
-"/" { NextToken = MakeDiv(); return TOK_DIV; }
-"^" { NextToken = MakeExp(); return TOK_EXP; }
-"(" { NextToken = MakeLParen(); return TOK_LPAREN; }
-")" { NextToken = MakeRParen(); return TOK_RPAREN; }
-"," { NextToken = MakeComma(); return TOK_COMMA; }
+"+" { EMPLACE(token_type::Plus);   return TOK_PLUS; }
+"-" { EMPLACE(token_type::Minus);  return TOK_MINUS; }
+"*" { EMPLACE(token_type::Times);  return TOK_TIMES; }
+"/" { EMPLACE(token_type::Div);    return TOK_DIV; }
+"^" { EMPLACE(token_type::Exp);    return TOK_EXP; }
+"(" { EMPLACE(token_type::LParen); return TOK_LPAREN; }
+")" { EMPLACE(token_type::RParen); return TOK_RPAREN; }
+"," { EMPLACE(token_type::Comma);  return TOK_COMMA; }
 
 [ \t]+
 
