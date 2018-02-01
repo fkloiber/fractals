@@ -25,7 +25,7 @@ struct token
 {
     token_type Type;
     bool IsInteger;
-    uint64_t Integer;
+    int64_t Integer;
     double Double;
     std::string Name;
     token() : Type(token_type::Invalid) {}
