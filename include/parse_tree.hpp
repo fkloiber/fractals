@@ -5,6 +5,9 @@
 #include <memory>
 #include <cstdint>
 
+struct parse_tree;
+using parse_tree_ptr = std::shared_ptr<parse_tree>;
+
 #include "driver.hpp"
 #include "parser_extra.hpp"
 
@@ -21,8 +24,6 @@ enum class expression_type
     Identifier
 };
 
-struct parse_tree;
-using parse_tree_ptr = std::shared_ptr<parse_tree>;
 
 struct parse_tree
 {
@@ -169,3 +170,6 @@ inline parse_tree * makeIdentifier(std::string && Name)
 
     return Result;
 }
+
+
+void print(parse_tree_ptr P, int Indent = 0);

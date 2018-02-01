@@ -30,6 +30,7 @@ RE_FLEX_TARGET(infix
 add_executable(fractals
     src/fractals.cpp
     src/driver.cpp
+    src/parse_tree.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/infix_parser.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/infix_lexer.cpp
 )
