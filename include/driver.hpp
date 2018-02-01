@@ -11,4 +11,5 @@ public:
     void Error();
 
     void * Data;
+    bool Success;
 };

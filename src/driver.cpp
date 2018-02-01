@@ -28,15 +28,19 @@ driver::Parse(const std::string & Line)
     while (MyLexer.lex() != 0);
     TokenList.reserve(MyLexer.NextToken);
     Data = &TokenList;
+    Success = true;
     MyLexer.in(Line);
 
-    while ((TokenType = MyLexer.lex()) != 0)
+    while (Success && (TokenType = MyLexer.lex()) != 0)
     {
         InfixParse(Parser.get(), TokenType, MyLexer.NextToken, this);
     }
-    InfixParse(Parser.get(), 0, 0, this);
+    if (Success)
+    {
+        InfixParse(Parser.get(), 0, 0, this);
+    }
 
-    return false;
+    return Success;
 }
 
 void

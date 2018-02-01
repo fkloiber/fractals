@@ -2,10 +2,18 @@
 %token_prefix TOK_
 %token_type {int}
 %extra_argument {driver * Driver}
+
 %include {
 #include "token.hpp"
 #include "driver.hpp"
 #include "parser_extra.hpp"
+}
+
+%parse_accept {
+    Driver->Success = true;
+}
+%parse_failure {
+    Driver->Success = false;
 }
 
 %left PLUS MINUS.
