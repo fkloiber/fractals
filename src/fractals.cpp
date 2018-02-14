@@ -1,6 +1,17 @@
 #include <cstdio>
 
 #include "driver.hpp"
+#include "assembler.hpp"
+
+render_info<double> TestInfo =
+{
+    nullptr,
+    100, 100,
+    100,
+    100,
+    -2.0, 2.0, -2.0, 2.0,
+    2.0
+};
 
 int main(int argc, char ** argv)
 {
@@ -16,6 +27,9 @@ int main(int argc, char ** argv)
         {
             printf("Parsing successful. Parse tree is:\n");
             print(Driver.Root);
+            func F = Assemble(Driver.Root);
+            F(&TestInfo);
+            FreeFunc(F);
         } else
         {
             printf("Parsing failed.\n");

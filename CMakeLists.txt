@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
 project(fractals VERSION 0.1.0 LANGUAGES C CXX)
 
+add_subdirectory(lib)
+
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 include(SetCompilerWarningAll)
 
@@ -31,17 +33,20 @@ add_executable(fractals
     src/fractals.cpp
     src/driver.cpp
     src/parse_tree.cpp
+    src/assembler.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/infix_parser.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/infix_lexer.cpp
 )
 
 target_include_directories(fractals
   PRIVATE
-  include
+    include
+    lib/asmjit/src
     ${CMAKE_CURRENT_BINARY_DIR}
     ${RE_FLEX_INCLUDE_DIR}
 )
 target_link_libraries(fractals
+    asmjit
     ${RE_FLEX_LIBRARIES}
 )
 set_property(TARGET fractals
